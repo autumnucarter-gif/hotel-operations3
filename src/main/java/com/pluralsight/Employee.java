@@ -1,12 +1,15 @@
 package com.pluralsight;
 
+import java.time.LocalDateTime;
+
 public class Employee {
     private int employeeId;
     private String name;
     private String department;
     private double payRate;
     private double hoursWorked;
-    private double startTime;   // 0 means "not punched in"
+    private double startTime;
+    private boolean clockedIn;
 
     public Employee(int employeeId, String name, String department, double payRate) {
         this.employeeId = employeeId;
@@ -15,6 +18,7 @@ public class Employee {
         this.payRate = payRate;
         this.hoursWorked = 0;
         this.startTime = 0;
+        this.clockedIn = false;
     }
 
     public int getEmployeeId() {
@@ -37,20 +41,33 @@ public class Employee {
         return hoursWorked;
     }
 
-    // Track when the shift started
     public void punchIn(double time) {
         startTime = time;
     }
 
-    // Shift over: add its length to the total and clear the start time
+
+
     public void punchOut(double time) {
         double duration = time - startTime;
         hoursWorked += duration;
         startTime = 0;
     }
 
-    // BONUS: one method for both. No start time stored -> this is a punch in;
-    // a start time stored -> this is a punch out
+    public void punchIn() {
+        LocalDateTime now = LocalDateTime.now();
+        int hour = now.getHour();
+        int minute = now.getMinute();
+        double time = hour + (minute / 60.0);
+        startTime = time;
+    }
+
+    public void punchOut() {
+        LocalDateTime now = LocalDateTime.now();
+
+
+    }
+
+
     public void punchTimeCard(double time) {
         if (startTime == 0) {
             startTime = time;
